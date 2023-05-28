@@ -1,24 +1,44 @@
 import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const Problem1 = () => {
-    const [data, setData] = useState([])
+
     const [show, setShow] = useState('all');  
+    const {data:data=[],}=useQuery({
+        queryKey:['data'],
+        queryFn:async ()=>{
+            const res= await fetch('https://learn-programin-server.vercel.app/task')
+            const data=res.json()
+            return data
+        }
+    })
 
     const finalDta = data.filter(da => da.status === show)
     const handleClick = (val) => {
         setShow(val);
     }
-    useEffect(() => {
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => setData(data))
-    }, [])
+
+  
+
     const handelSubmit=(event)=>{
         event.preventDefault()
         const form=event.target
         const name=form.name.value;
         const status=form.status.value;
         console.log(name,status);
+        const task={
+            name,
+            status
+        }
+        fetch('https://learn-programin-server.vercel.app/task',{
+            method:"POST",
+            headers:{'content-type':"application/json"},
+            body:JSON.stringify(task)        
+        }).then(res=>res.json()).then(data=>{
+            if(data.acknowledged){
+                alert('data inseted !!')
+            }
+        })
     }
     return (
 
