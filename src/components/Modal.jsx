@@ -35,14 +35,12 @@ const Modal = ({ data, setPage, pages,page }) => {
                             </table>
                         </div>
                         <nav aria-label="...">
-                            <ul class="pagination pagination-lg">
-                                <p>current page {page}</p>
+                            <ul className="pagination pagination-lg">                               
                                 {
                                     [...Array(pages).keys()].map(number => <button onClick={()=>setPage(number)}
                                         key={number}
                                         className={page ===number && 'btn btn-primary btn-sm'}
                                     >
-
                                         {number+1}
                                     </button>)
                                 }
